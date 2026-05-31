@@ -11,11 +11,13 @@ services:
       - .env
     networks:
       - mem0_network
+    volumes:
+      - mem0_history:/app/history
     depends_on:
       postgres:
         condition: service_healthy
     command: >
-      sh -c "rm -rf /app/packages && pip install -q --force-reinstall --no-deps mem0ai && alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
+      sh -c "mkdir -p /app/history && rm -rf /app/packages && pip install -q --force-reinstall --no-deps mem0ai && alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
     environment:
       - APP_DB_NAME=mem0_app
       - POSTGRES_HOST=postgres
@@ -75,6 +77,7 @@ services:
 
 volumes:
   mem0_clean_postgres:
+  mem0_history:
 
 networks:
   mem0_network:
