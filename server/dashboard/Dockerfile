@@ -1,4 +1,8 @@
 FROM node:22-alpine AS base
+
+ENV NODE_OPTIONS=--max-old-space-size=4096
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
